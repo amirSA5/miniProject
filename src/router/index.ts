@@ -39,4 +39,23 @@ const router = createRouter({
   ]
 })
 
+router.beforeEach((to, from, next) => {
+  const isLoggedIn = localStorage.getItem('userId');
+  
+  // If the user is not logged in and tries to access the home page,
+  // allow them to access it
+  if (!isLoggedIn && to.path === '/') {
+    next();
+  } 
+  // If the user is logged in and tries to access the home page,
+  // redirect them to a different page (e.g., dashboard or todos page)
+  else if (isLoggedIn && to.path === '/') {
+    next('/todos/:userId'); 
+  } 
+  else {
+    next(); // Allow access to other routes
+  }
+});
+
+
 export default router

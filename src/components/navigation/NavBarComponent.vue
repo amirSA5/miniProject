@@ -1,21 +1,22 @@
-<!-- Navbar.vue -->
-
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-      <router-link to="/" class="navbar-brand">ToDo Website</router-link>
+      <router-link v-if="isLoggedIn" to="/" class="navbar-brand">ToDo Website</router-link>
+      <router-link v-else to="/login" class="navbar-brand">ToDo Website</router-link>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
+          <li class="nav-item" v-if="!isLoggedIn">
             <router-link to="/" class="nav-link">Home</router-link>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-if="!isLoggedIn">
             <router-link to="/login" class="nav-link">Login</router-link>
           </li>
-          
+          <li class="nav-item" v-if="isLoggedIn">
+            <button @click="logout" class="nav-link">Logout</button>
+          </li>
         </ul>
       </div>
     </div>
@@ -24,9 +25,31 @@
 
 <script>
 export default {
-  // Navbar component logic goes here
+  data() {
+    return {
+      isLoggedIn: localStorage.getItem('userId') !== null
+    };
+  },
+  watch: {
+    isLoggedIn(newValue) {
+      // Handle the state change if needed
+      console.log('isLoggedIn changed:', newValue);
+    }
+  },
+  methods: {
+    logout() {
+      // Perform logout action
+      localStorage.removeItem('userId');
+      this.isLoggedIn = false;
+      // You may want to perform additional actions like clearing tokens or session data
+      this.$router.replace('/'); // Redirect to home page and replace current history entry
+    }
+  }
 };
 </script>
+
+
+
 
 <style scoped>
 /* Add scoped styling for Navbar */

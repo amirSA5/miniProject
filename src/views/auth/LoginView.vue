@@ -59,7 +59,8 @@ export default {
 
       // Redirect to the todos page with the user ID
       const userId = localStorage.getItem("userId");
-      this.$router.push(`/todos/${userId}`);
+      //this.$router.push(`/todos/${userId}`);
+      window.location.href = `/todos/${userId}`;
     } else {
       // Handle other response status codes or conditions
       this.error = 'Failed to log in. Please check your credentials and try again.';
